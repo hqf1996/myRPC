@@ -34,7 +34,8 @@ public class ExportService {
                     try {
                         /**解析请求*/
                         ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
-                        String methodName = input.readUTF();
+//                        String methodName = input.readUTF();
+                        String methodName = (String) input.readObject();
                         System.out.println("methodName:" + methodName);
                         Class<?>[] parameterTypes = (Class<?>[])input.readObject();
                         System.out.println("ParameterTypes:" + Arrays.toString(parameterTypes));
@@ -43,6 +44,7 @@ public class ExportService {
 
                         /**处理请求，输出结果*/
                         ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
+                        // 反射调用，处理请求
                         Method method = service.getClass().getMethod(methodName, parameterTypes);
                         Object result = method.invoke(service, args);
                         System.out.println("服务器端处理完并返回响应：" + result);
