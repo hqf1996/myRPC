@@ -14,7 +14,9 @@ import java.util.Arrays;
  * @Modified By:
  */
 public class myInvocationHandler implements InvocationHandler {
+    // 服务器端的ip地址
     private final String host;
+    // 端口号
     private final int port;
 
     public myInvocationHandler(String host, int port) {
@@ -31,7 +33,8 @@ public class myInvocationHandler implements InvocationHandler {
         System.out.println("向客户端发送请求...");
         ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
         // 方法名
-        output.writeUTF(method.getName());
+//        output.writeUTF(method.getName());
+        output.writeObject(method.getName());
         System.out.println("methodName:" + method.getName());
         // 参数类型列表
         output.writeObject(method.getParameterTypes());
