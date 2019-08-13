@@ -1,4 +1,4 @@
-package com.RPCService;
+package com.RPCService.Method;
 
 /**
  * @Author: hqf
