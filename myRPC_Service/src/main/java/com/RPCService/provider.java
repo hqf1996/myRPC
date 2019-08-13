@@ -11,6 +11,7 @@ import java.io.IOException;
 public class provider {
     public static void main(String[] args) throws IOException {
         HelloService helloService = new HelloServiceImpl();
-        ExportService.exportHelloService(helloService, 1234);
+//        ExportService.exportHelloService_v1(helloService, 1234);
+        ExportService.exportHelloService_v2(helloService, 1234);
     }
 }
