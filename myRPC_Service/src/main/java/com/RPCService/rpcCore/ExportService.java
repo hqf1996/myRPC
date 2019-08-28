@@ -53,4 +53,10 @@ public class ExportService {
             executor.execute(new SocketThread(service, port, socket));
         }
     }
+
+    public static void exportHelloService_v3(final Object service, int port){
+        System.out.println("Ω®¡¢Socket«Î«Û, port = " + port);
+        NIOService nioService = new NIOService(port, service);
+        new Thread(nioService).start();
+    }
 }
