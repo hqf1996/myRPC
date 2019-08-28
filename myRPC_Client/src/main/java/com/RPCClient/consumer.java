@@ -11,8 +11,14 @@ import java.lang.reflect.Proxy;
 public class consumer {
     public static void main(String[] args) {
         // 重写 InvocationHandler
-        myInvocationHandler handler = new myInvocationHandler("127.0.0.1", 1234);
-        // JDK动态代理生成HelloService的代理类proxy，相当于是对目标方法的增强类，这边用它来发送RPC请求和接受服务器端返回值
+//        myInvocationHandler handler = new myInvocationHandler("127.0.0.1", 1234);
+//        // JDK动态代理生成HelloService的代理类proxy，相当于是对目标方法的增强类，这边用它来发送RPC请求和接受服务器端返回值
+//        HelloService proxy = (HelloService) Proxy.newProxyInstance(HelloService.class.getClassLoader(),
+//                new Class<?>[] {HelloService.class},
+//                handler);
+//        proxy.hello("World");
+
+        nioInvocationHandler handler = new nioInvocationHandler("127.0.0.1", 1234);
         HelloService proxy = (HelloService) Proxy.newProxyInstance(HelloService.class.getClassLoader(),
                 new Class<?>[] {HelloService.class},
                 handler);
