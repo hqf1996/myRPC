@@ -33,13 +33,13 @@ public class nioInvocationHandler implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         SocketChannel sc = SocketChannel.open();
-        Selector selector = Selector.open();
+//        Selector selector = Selector.open();
         ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
         // 判断是否连接成功，若成功发送请求消息并读应答
         if (sc.connect(new InetSocketAddress(host, port))){
             sc.configureBlocking(false);
             System.out.println("成功建立连接...");
-            sc.register(selector, SelectionKey.OP_READ);
+//            sc.register(selector, SelectionKey.OP_READ);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(method.getName());
