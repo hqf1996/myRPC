@@ -1,6 +1,8 @@
 package com.RPCClient;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -32,12 +34,12 @@ public class nioInvocationHandler implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         SocketChannel sc = SocketChannel.open();
         Selector selector = Selector.open();
-        sc.configureBlocking(false);
+        ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
         // 判断是否连接成功，若成功发送请求消息并读应答
         if (sc.connect(new InetSocketAddress(host, port))){
+            sc.configureBlocking(false);
             System.out.println("成功建立连接...");
             sc.register(selector, SelectionKey.OP_READ);
-            ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
             objectOutputStream.writeObject(method.getName());
@@ -51,6 +53,19 @@ public class nioInvocationHandler implements InvocationHandler {
             sc.write(writeBuffer);
         }else {
             System.out.println("建立连接失败...");
+        }
+        // 读取返回结果
+        writeBuffer.clear();
+        int count = 0;
+        while ((count = sc.read(writeBuffer))!=-1){
+            if (count > 0){
+                System.out.println("读取到服务器端返回结果...");
+                writeBuffer.flip();
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(writeBuffer.array());
+                ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                Object result = objectInputStream.readObject();
+                System.out.println(result.toString());
+            }
         }
         return null;
     }
