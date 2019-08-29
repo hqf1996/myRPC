@@ -87,7 +87,6 @@ public class NIOService implements Runnable {
                         sc.write(byteBuffer);
                         // ¹Ø±Õ×ÊÔ´
                         sc.close();
-                        selector.close();
                     }
                 }
             }
