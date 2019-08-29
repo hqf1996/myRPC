@@ -37,7 +37,7 @@ public class NIOService implements Runnable {
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);  //注册到多路复用器上，监听accept 接收就绪，准备接受新进入的连接
             Object result = null;
             while (true){
-                selector.select(1000);// 可以设置休眠事件为1s
+                selector.select(1000);// 阻塞在这里，可以设置休眠事件为1s，每隔一秒钟被唤醒一次，不管有没有读写事件
                 Set<SelectionKey> selectionKeys = selector.selectedKeys();
                 Iterator<SelectionKey> it = selectionKeys.iterator();
                 while (it.hasNext()){
@@ -56,7 +56,7 @@ public class NIOService implements Runnable {
                         SocketChannel sc = (SocketChannel) key.channel();
                         ByteBuffer byteBuffer= ByteBuffer.allocate(1024);
                         byteBuffer.clear();
-                        if (sc.read(byteBuffer) != -1){
+                        while (sc.read(byteBuffer) > 0){
                             System.out.println("读取客户端请求...");
                             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteBuffer.array());
                             ObjectInputStream input = new ObjectInputStream(byteArrayInputStream);
