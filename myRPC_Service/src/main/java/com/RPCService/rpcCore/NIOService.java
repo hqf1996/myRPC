@@ -42,6 +42,7 @@ public class NIOService implements Runnable {
                 Iterator<SelectionKey> it = selectionKeys.iterator();
                 while (it.hasNext()){
                     SelectionKey key = it.next();
+                    it.remove();
                     // 处理客户端发送过来的请求
                     if (key.isValid() && key.isAcceptable()){
                         SocketChannel sc = ((ServerSocketChannel) key.channel()).accept(); //多路复用器监听到有新的客户端接入，处理新的请求接入，
@@ -55,31 +56,39 @@ public class NIOService implements Runnable {
                         SocketChannel sc = (SocketChannel) key.channel();
                         ByteBuffer byteBuffer= ByteBuffer.allocate(1024);
                         byteBuffer.clear();
-                        int read = sc.read(byteBuffer);
-                        System.out.println(read);
-                        while (sc.read(byteBuffer) != -1){
+                        if (sc.read(byteBuffer) != -1){
                             System.out.println("读取客户端请求...");
                             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteBuffer.array());
                             ObjectInputStream input = new ObjectInputStream(byteArrayInputStream);
+
                             String methodName = (String) input.readObject();
                             System.out.println("methodName：" + methodName);
                             Class<?>[] parameterTypes = (Class<?>[])input.readObject();
                             System.out.println("ParameterTypes:" + Arrays.toString(parameterTypes));
                             Object[] args = (Object [])input.readObject();
                             System.out.println(Arrays.toString(args));
+
                             Method method = service.getClass().getMethod(methodName, parameterTypes);
                             result = method.invoke(service, args);
                             sc.register(selector, SelectionKey.OP_WRITE);
                         }
                     }
-                    if (key.isValid() && key.isWritable()){
+                    if (key.isWritable()){
                         System.out.println("检测到写操作到客户端...");
+                        ByteBuffer byteBuffer= ByteBuffer.allocate(1024);
+                        byteBuffer.clear();
                         SocketChannel sc = (SocketChannel) key.channel();
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
                         objectOutputStream.writeObject(result);
+                        byteBuffer.put(byteArrayOutputStream.toByteArray());
+                        byteBuffer.flip(); //将读转化为写模式
+                        System.out.println("返回客户端调用结果: "+ result);
+                        sc.write(byteBuffer);
+                        // 关闭资源
+                        sc.close();
+                        selector.close();
                     }
-                    it.remove();
                 }
             }
         } catch (IOException e) {
