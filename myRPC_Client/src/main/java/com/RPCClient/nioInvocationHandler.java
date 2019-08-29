@@ -57,16 +57,18 @@ public class nioInvocationHandler implements InvocationHandler {
         // 读取返回结果
         writeBuffer.clear();
         int count = 0;
+        Object result = null;
         while ((count = sc.read(writeBuffer))!=-1){
             if (count > 0){
                 System.out.println("读取到服务器端返回结果...");
                 writeBuffer.flip();
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(writeBuffer.array());
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-                Object result = objectInputStream.readObject();
+                result = objectInputStream.readObject();
                 System.out.println(result.toString());
             }
         }
-        return null;
+        sc.close();
+        return result;
     }
 }
