@@ -62,11 +62,11 @@ public class NIOService implements Runnable {
                             ObjectInputStream input = new ObjectInputStream(byteArrayInputStream);
 
                             String methodName = (String) input.readObject();
-                            System.out.println("methodName£º" + methodName);
+//                            System.out.println("methodName£º" + methodName);
                             Class<?>[] parameterTypes = (Class<?>[])input.readObject();
-                            System.out.println("ParameterTypes:" + Arrays.toString(parameterTypes));
+//                            System.out.println("ParameterTypes:" + Arrays.toString(parameterTypes));
                             Object[] args = (Object [])input.readObject();
-                            System.out.println(Arrays.toString(args));
+//                            System.out.println(Arrays.toString(args));
 
                             Method method = service.getClass().getMethod(methodName, parameterTypes);
                             result = method.invoke(service, args);
@@ -90,15 +90,7 @@ public class NIOService implements Runnable {
                     }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

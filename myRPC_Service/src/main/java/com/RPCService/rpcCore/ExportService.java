@@ -26,7 +26,7 @@ public class ExportService {
     */
     public static void exportHelloService_v1(final Object service, int port) throws IOException {
         // 建立Socket服务端请求
-        System.out.println("建立Socket请求, port = " + port);
+        System.out.println("建立Socket请求1, port = " + port);
         ServerSocket serverSocket = new ServerSocket(port);
         while (true) {
             //监听是否有来自客户端的socket请求
@@ -43,7 +43,7 @@ public class ExportService {
      *                但是仍然是BIO的方式，引入线程池只是采用了一种伪异步的方法。
     */
     public static void exportHelloService_v2(final Object service, int port) throws IOException {
-        System.out.println("建立Socket请求, port = " + port);
+        System.out.println("建立Socket请求2, port = " + port);
         ServerSocket serverSocket = new ServerSocket(port);
         //创建线程池
         ExecutorService executor = Executors.newCachedThreadPool();
@@ -54,9 +54,27 @@ public class ExportService {
         }
     }
 
+    /**
+     * 第三版 V3.0
+     * @param service 采用NIO方式进行
+     * @param port
+     */
     public static void exportHelloService_v3(final Object service, int port){
-        System.out.println("建立Socket请求, port = " + port);
+        System.out.println("建立Socket请求3, port = " + port);
         NIOService nioService = new NIOService(port, service);
         new Thread(nioService).start();
     }
+
+    /**
+     *  第四版  V4.0  采用netty的方式来改进
+     * @param service
+     * @param port
+     * @throws InterruptedException
+     */
+    public static void exportHelloService_v4(final Object service, int port) throws InterruptedException {
+        System.out.println("Netty_RPC服务端构建完成, port = " + port);
+        NettyService nettyService = new NettyService(port, service);
+        nettyService.run();
+    }
+
 }

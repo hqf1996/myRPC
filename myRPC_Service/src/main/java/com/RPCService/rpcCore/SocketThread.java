@@ -71,13 +71,13 @@ public class SocketThread implements Runnable {
             output.writeObject(result);
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
