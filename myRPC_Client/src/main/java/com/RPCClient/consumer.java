@@ -18,7 +18,13 @@ public class consumer {
 //                handler);
 //        proxy.hello("World");
 
-        nioInvocationHandler handler = new nioInvocationHandler("127.0.0.1", 1234);
+//        nioInvocationHandler handler = new nioInvocationHandler("127.0.0.1", 1234);
+//        HelloService proxy = (HelloService) Proxy.newProxyInstance(HelloService.class.getClassLoader(),
+//                new Class<?>[] {HelloService.class},
+//                handler);
+//        proxy.hello("World");
+
+        nettyInvocationHandler handler = new nettyInvocationHandler("127.0.0.1", 1234);
         HelloService proxy = (HelloService) Proxy.newProxyInstance(HelloService.class.getClassLoader(),
                 new Class<?>[] {HelloService.class},
                 handler);

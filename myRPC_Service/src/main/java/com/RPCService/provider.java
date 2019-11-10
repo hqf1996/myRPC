@@ -14,11 +14,11 @@ import java.lang.reflect.InvocationTargetException;
  * @Modified By:
  */
 public class provider {
-    public static void main(String[] args) throws IOException, InvocationTargetException, IllegalAccessException {
+    public static void main(String[] args) throws IOException, InvocationTargetException, IllegalAccessException, InterruptedException {
         HelloService helloService = new HelloServiceImpl();
 //        ExportService.exportHelloService_v1(helloService, 1234);
 //        ExportService.exportHelloService_v2(helloService, 1234);
-        ExportService.exportHelloService_v3(helloService, 1234);
-
+//        ExportService.exportHelloService_v3(helloService, 1234);
+        ExportService.exportHelloService_v4(helloService, 1234);
     }
 }
