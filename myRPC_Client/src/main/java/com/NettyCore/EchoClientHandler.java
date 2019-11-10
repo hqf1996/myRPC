@@ -27,14 +27,14 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         this.args = args;
     }
 
-    // å½“å®¢æˆ·ç«¯è¿æ¥ä¸ŠæœåŠ¡ç«¯çš„æ—¶å€™è§¦å‘
+    // µ±¿Í»§¶ËÁ¬½ÓÉÏ·şÎñ¶ËµÄÊ±ºò´¥·¢
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws IOException {
         MSG message = new MSG();
         message.setMethodName(name);
         message.setParameterTypes(parameterTypes);
         message.setArgs(args);
-        System.out.println("å®¢æˆ·ç«¯å‘é€è¯·æ±‚åˆ°æœåŠ¡ç«¯...");
+        System.out.println("¿Í»§¶Ë·¢ËÍÇëÇóµ½·şÎñ¶Ë...");
         ctx.write(message);
         ctx.flush();
     }
@@ -42,7 +42,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         String msg1 = (String) msg;
-        System.out.println("å®¢æˆ·ç«¯æ¥æ”¶æœåŠ¡ç«¯å“åº”ï¼Œå¹¶è¾“å‡ºè¿”å›ä¿¡æ¯...");
+        System.out.println("¿Í»§¶Ë½ÓÊÕ·şÎñ¶ËÏìÓ¦£¬²¢Êä³ö·µ»ØĞÅÏ¢...");
         System.out.println(msg1);
     }
 
