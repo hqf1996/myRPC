@@ -1,12 +1,17 @@
 package com.RPCService.rpcCore;
 
+import com.RPCService.ZKService.zkService;
+import org.apache.zookeeper.KeeperException;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -72,6 +77,23 @@ public class ExportService {
      * @throws InterruptedException
      */
     public static void exportHelloService_v4(final Object service, int port) throws InterruptedException {
+        System.out.println("Netty_RPC服务端构建完成, port = " + port);
+        NettyService nettyService = new NettyService(port, service);
+        nettyService.run();
+    }
+
+    /**
+     *  第五版   V5.0  添加进zookeeper作为服务治理
+     * @param service
+     */
+    public static void exportHelloService_v5(final Object service, int port) throws InterruptedException, IOException, KeeperException {
+        // 把服务注册到zookeeper上
+        zkService zk = new zkService();
+        String ConnectHostAddress = InetAddress.getLocalHost().getHostAddress() + ":2181";
+        String hostAddress = InetAddress.getLocalHost().getHostAddress();
+        zk.connect(ConnectHostAddress, 2000);
+        zk.regist("helloService", hostAddress, String.valueOf(port));
+        // 构建服务
         System.out.println("Netty_RPC服务端构建完成, port = " + port);
         NettyService nettyService = new NettyService(port, service);
         nettyService.run();
