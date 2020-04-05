@@ -1,5 +1,6 @@
 package com.RPCService.rpcCore;
 
+import com.Message.HessianSerializeDeserializeMain;
 import com.Message.MSG;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -22,10 +23,11 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         this.service = service;
     }
 
-    //有数据读取的时候调用
+    // 有数据读取的时候调用
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        Object result = dealMSG((MSG) msg);
+//        Object result = dealMSG((MSG) msg);
+        Object result = dealMSG(HessianSerializeDeserializeMain.deserialize((byte[]) msg));
         System.out.println("服务端解析请求...");
         ctx.writeAndFlush(result);
         System.out.println("服务端返回数据给客户端...");
