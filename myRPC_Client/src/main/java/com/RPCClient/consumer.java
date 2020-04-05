@@ -37,8 +37,8 @@ public class consumer {
 //        proxy.hello("World");
 
         zkClient zk = new zkClient();
-        // 连接zookeeper
-        zk.connect("10.66.104.159:2181", 2000);
+        // 连接zookeeper，这边连接的是zk服务器的地址   192.168.10.105:2181   10.66.104.159:2181
+        zk.connect("192.168.10.105:2181", 2000);
         // 获得结点信息
         List<String> helloService = zk.getChildren("helloService");
         // 这边可以添加zookeeper负载均衡机制，暂时使用随机的方法吧

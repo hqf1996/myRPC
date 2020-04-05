@@ -1,5 +1,6 @@
 package com.NettyCore;
 
+import com.Message.HessianSerializeDeserializeMain;
 import com.Message.MSG;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -34,8 +35,10 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         message.setMethodName(name);
         message.setParameterTypes(parameterTypes);
         message.setArgs(args);
+        byte[] serialize = HessianSerializeDeserializeMain.serialize(message);
         System.out.println("客户端发送请求到服务端...");
-        ctx.write(message);
+//        ctx.write(message);
+        ctx.write(serialize);
         ctx.flush();
     }
 
