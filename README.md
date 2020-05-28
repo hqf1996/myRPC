@@ -9,4 +9,4 @@
   
   V4：较第三版利用Netty对原生的NIO进行简化。
   
-  V5：较第四版利用ZooKeeper实现服务治理。
+  V5：较第四版利用ZooKeeper实现服务治理，添加SPI机制用于负载均衡。
