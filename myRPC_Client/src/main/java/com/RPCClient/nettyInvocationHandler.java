@@ -13,9 +13,9 @@ import java.util.Arrays;
  * @Modified By:
  */
 public class nettyInvocationHandler implements InvocationHandler {
-    // ·şÎñÆ÷¶ËµÄipµØÖ·
+    // æœåŠ¡å™¨ç«¯çš„ipåœ°å€
     private final String host;
-    // ¶Ë¿ÚºÅ
+    // ç«¯å£å·
     private final int port;
 
     public nettyInvocationHandler(String host, int port) {

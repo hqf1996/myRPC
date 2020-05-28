@@ -16,7 +16,7 @@ import java.io.IOException;
 
 public class HessianSerializeDeserializeMain {
     /**
-     * ĞòÁĞ»¯
+     * åºåˆ—åŒ–
      * @param msg
      * @return
      */
@@ -25,7 +25,7 @@ public class HessianSerializeDeserializeMain {
         HessianOutput hessianOutput = null;
         try {
             byteArrayOutputStream = new ByteArrayOutputStream();
-            // HessianµÄĞòÁĞ»¯Êä³ö
+            // Hessiançš„åºåˆ—åŒ–è¾“å‡º
             hessianOutput = new HessianOutput(byteArrayOutputStream);
             hessianOutput.writeObject(msg);
             return byteArrayOutputStream.toByteArray();
@@ -47,7 +47,7 @@ public class HessianSerializeDeserializeMain {
     }
 
     /**
-     * ·´ĞòÁĞ»¯
+     * ååºåˆ—åŒ–
      * @param msgArray
      * @return
      */
@@ -56,7 +56,7 @@ public class HessianSerializeDeserializeMain {
         HessianInput hessianInput = null;
         try {
             byteArrayInputStream = new ByteArrayInputStream(msgArray);
-            // HessianµÄ·´ĞòÁĞ»¯¶ÁÈ¡¶ÔÏó
+            // Hessiançš„ååºåˆ—åŒ–è¯»å–å¯¹è±¡
             hessianInput = new HessianInput(byteArrayInputStream);
             return (MSG) hessianInput.readObject();
         } catch (IOException e) {

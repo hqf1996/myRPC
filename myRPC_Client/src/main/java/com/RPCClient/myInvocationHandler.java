@@ -9,14 +9,14 @@ import java.util.Arrays;
 
 /**
  * @Author: hqf
- * @description: ÖØĞ´invoke
+ * @description: é‡å†™invoke
  * @Data: Create in 14:09 2019/8/11
  * @Modified By:
  */
 public class myInvocationHandler implements InvocationHandler {
-    // ·şÎñÆ÷¶ËµÄipµØÖ·
+    // æœåŠ¡å™¨ç«¯çš„ipåœ°å€
     private final String host;
-    // ¶Ë¿ÚºÅ
+    // ç«¯å£å·
     private final int port;
 
     public myInvocationHandler(String host, int port) {
@@ -26,30 +26,30 @@ public class myInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        // Óë·şÎñÆ÷¶Ë´´½¨Á¬½Ó
-        System.out.println("´´½¨Óë·şÎñÆ÷¶ËµÄµÄÁ¬½Ó...");
+        // ä¸æœåŠ¡å™¨ç«¯åˆ›å»ºè¿æ¥
+        System.out.println("åˆ›å»ºä¸æœåŠ¡å™¨ç«¯çš„çš„è¿æ¥...");
         Socket socket = new Socket(host, port);
-        // ¿Í»§¶ËÏò·şÎñ¶Ë·¢ËÍÇëÇó
-        System.out.println("Ïò¿Í»§¶Ë·¢ËÍÇëÇó...");
+        // å®¢æˆ·ç«¯å‘æœåŠ¡ç«¯å‘é€è¯·æ±‚
+        System.out.println("å‘å®¢æˆ·ç«¯å‘é€è¯·æ±‚...");
         ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
-        // ·½·¨Ãû
+        // æ–¹æ³•å
 //        output.writeUTF(method.getName());
         output.writeObject(method.getName());
         System.out.println("methodName:" + method.getName());
-        // ²ÎÊıÀàĞÍÁĞ±í
+        // å‚æ•°ç±»å‹åˆ—è¡¨
         output.writeObject(method.getParameterTypes());
         System.out.println("parameterTypes:" + Arrays.toString(method.getParameterTypes()));
-        // ²ÎÊıÖµÁĞ±í
+        // å‚æ•°å€¼åˆ—è¡¨
         output.writeObject(args);
         System.out.println("args:" + Arrays.toString(args));
 
-        /**¿Í»§¶Ë¶ÁÈ¡·şÎñ¶ËµÄ·µ»Ø*/
-        System.out.println("\n¿Í»§¶Ë¶ÁÈ¡·şÎñ¶ËµÄ·µ»Ø...");
+        /**å®¢æˆ·ç«¯è¯»å–æœåŠ¡ç«¯çš„è¿”å›*/
+        System.out.println("\nå®¢æˆ·ç«¯è¯»å–æœåŠ¡ç«¯çš„è¿”å›...");
         ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
         Object returnResult = input.readObject();
         System.out.println(returnResult);
 
-        // ¹Ø±Õ×ÊÔ´
+        // å…³é—­èµ„æº
         socket.close();
         input.close();
         output.close();

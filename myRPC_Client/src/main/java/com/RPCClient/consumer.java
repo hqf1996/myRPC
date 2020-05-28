@@ -1,12 +1,15 @@
 package com.RPCClient;
 
+import com.LoadBalance.AbstractLoadBalance;
+import com.LoadBalance.RandomLoadBalance;
+import com.LoadBalance.RandomLoadBalanceByWeight;
 import com.ZKClient.zkClient;
+import com.spi.loader.myExtensionLoader;
 import org.apache.zookeeper.KeeperException;
 
 import java.io.IOException;
 import java.lang.reflect.Proxy;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @Author: hqf
@@ -38,15 +41,22 @@ public class consumer {
 
         zkClient zk = new zkClient();
         // 连接zookeeper，这边连接的是zk服务器的地址   192.168.10.105:2181   10.66.104.159:2181
-        zk.connect("192.168.10.105:2181", 2000);
+        zk.connect("10.66.104.159:2181", 2000);
         // 获得结点信息
         List<String> helloService = zk.getChildren("helloService");
         // 这边可以添加zookeeper负载均衡机制，暂时使用随机的方法吧
-        Random random = new Random();
-        int randomi = random.nextInt(helloService.size());
-        String ipAndport = helloService.get(randomi);
-        String[] split = ipAndport.split(":");
-        System.out.println("当前访问的机器是：" + split[0] + ":" + split[1]);
+//        AbstractLoadBalance loadBalance = new RandomLoadBalance();
+        AbstractLoadBalance loadBalance = new RandomLoadBalanceByWeight();
+        String[] split = loadBalance.doSelect(helloService);
+
+        // 默认的负载均衡方式
+        myExtensionLoader<AbstractLoadBalance> extensionLoader = myExtensionLoader.getExtensionLoader(AbstractLoadBalance.class);
+        AbstractLoadBalance method = extensionLoader.getDefaultExtension();
+        method.doSelect(helloService);
+        // 也可以指定负载均衡名称的
+//        AbstractLoadBalance method2 = extensionLoader.getExtension("loadBalance2");
+//        method2.doSelect(helloService);
+
         nettyInvocationHandler handler = new nettyInvocationHandler(split[0], Integer.valueOf(split[1]));
         HelloService proxy = (HelloService) Proxy.newProxyInstance(HelloService.class.getClassLoader(),
                 new Class<?>[] {HelloService.class},

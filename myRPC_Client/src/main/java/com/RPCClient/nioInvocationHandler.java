@@ -20,9 +20,9 @@ import java.util.Arrays;
  * @Modified By:
  */
 public class nioInvocationHandler implements InvocationHandler {
-    // ·şÎñÆ÷¶ËµÄipµØÖ·
+    // æœåŠ¡å™¨ç«¯çš„ipåœ°å€
     private final String host;
-    // ¶Ë¿ÚºÅ
+    // ç«¯å£å·
     private final int port;
 
     public nioInvocationHandler(String host, int port) {
@@ -35,10 +35,10 @@ public class nioInvocationHandler implements InvocationHandler {
         SocketChannel sc = SocketChannel.open();
 //        Selector selector = Selector.open();
         ByteBuffer writeBuffer = ByteBuffer.allocate(1024);
-        // ÅĞ¶ÏÊÇ·ñÁ¬½Ó³É¹¦£¬Èô³É¹¦·¢ËÍÇëÇóÏûÏ¢²¢¶ÁÓ¦´ğ
+        // åˆ¤æ–­æ˜¯å¦è¿æ¥æˆåŠŸï¼Œè‹¥æˆåŠŸå‘é€è¯·æ±‚æ¶ˆæ¯å¹¶è¯»åº”ç­”
         if (sc.connect(new InetSocketAddress(host, port))){
             sc.configureBlocking(false);
-            System.out.println("³É¹¦½¨Á¢Á¬½Ó...");
+            System.out.println("æˆåŠŸå»ºç«‹è¿æ¥...");
 //            sc.register(selector, SelectionKey.OP_READ);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
@@ -52,15 +52,15 @@ public class nioInvocationHandler implements InvocationHandler {
             writeBuffer.flip();
             sc.write(writeBuffer);
         }else {
-            System.out.println("½¨Á¢Á¬½ÓÊ§°Ü...");
+            System.out.println("å»ºç«‹è¿æ¥å¤±è´¥...");
         }
-        // ¶ÁÈ¡·µ»Ø½á¹û
+        // è¯»å–è¿”å›ç»“æœ
         writeBuffer.clear();
         int count = 0;
         Object result = null;
         while ((count = sc.read(writeBuffer))!=-1){
             if (count > 0){
-                System.out.println("¶ÁÈ¡µ½·şÎñÆ÷¶Ë·µ»Ø½á¹û...");
+                System.out.println("è¯»å–åˆ°æœåŠ¡å™¨ç«¯è¿”å›ç»“æœ...");
                 writeBuffer.flip();
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(writeBuffer.array());
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);

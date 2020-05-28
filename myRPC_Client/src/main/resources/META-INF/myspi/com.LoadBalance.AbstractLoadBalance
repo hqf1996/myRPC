@@ -1,0 +1,4 @@
+# loadBalance
+loadBalance1=com.LoadBalance.RandomLoadBalance
+loadBalance2=com.LoadBalance.RandomLoadBalanceByWeight
+defaultmethod=com.LoadBalance.RandomLoadBalance

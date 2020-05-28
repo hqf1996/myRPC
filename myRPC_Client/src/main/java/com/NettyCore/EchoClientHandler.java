@@ -28,7 +28,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         this.args = args;
     }
 
-    // µ±¿Í»§¶ËÁ¬½ÓÉÏ·şÎñ¶ËµÄÊ±ºò´¥·¢
+    // å½“å®¢æˆ·ç«¯è¿æ¥ä¸ŠæœåŠ¡ç«¯çš„æ—¶å€™è§¦å‘
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws IOException {
         MSG message = new MSG();
@@ -36,7 +36,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         message.setParameterTypes(parameterTypes);
         message.setArgs(args);
         byte[] serialize = HessianSerializeDeserializeMain.serialize(message);
-        System.out.println("¿Í»§¶Ë·¢ËÍÇëÇóµ½·şÎñ¶Ë...");
+        System.out.println("å®¢æˆ·ç«¯å‘é€è¯·æ±‚åˆ°æœåŠ¡ç«¯...");
 //        ctx.write(message);
         ctx.write(serialize);
         ctx.flush();
@@ -45,7 +45,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         String msg1 = (String) msg;
-        System.out.println("¿Í»§¶Ë½ÓÊÕ·şÎñ¶ËÏìÓ¦£¬²¢Êä³ö·µ»ØĞÅÏ¢...");
+        System.out.println("å®¢æˆ·ç«¯æ¥æ”¶æœåŠ¡ç«¯å“åº”ï¼Œå¹¶è¾“å‡ºè¿”å›ä¿¡æ¯...");
         System.out.println(msg1);
     }
 
